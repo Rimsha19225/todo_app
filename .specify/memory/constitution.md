@@ -6,7 +6,7 @@
      Templates requiring updates: N/A
      Follow-up TODOs: None
 -->
-# Evolution of Todo - Phase 1 Constitution
+# Evolution of Todo - Enhanced Phase 1 Constitution
 
 ## Vision
 
@@ -45,15 +45,15 @@ Python console application only; No web frameworks or GUI components; No databas
 No external dependencies beyond Python standard library; In-memory data structures only; Single-threaded operation; No networking capabilities; No file system persistence.
 
 ### Feature Scope
-Basic CRUD operations for todo items only; Console-based user interaction only; No authentication or authorization; No advanced features like due dates, categories, or reminders; No AI or chatbot functionality.
+Basic CRUD operations for todo items only; Console-based user interaction only; No authentication or authorization; Advanced features like due dates, priorities, categories, recurring patterns, search, filter, sort, and reminder functionality; No AI or chatbot functionality; No external API integrations.
 
 ## Success Criteria
 
 ### Functional Requirements
-All 5 basic todo features work: Add, List, Complete, Delete, Clear; App runs correctly from terminal without errors; User can perform all operations through console interface; Error handling for invalid inputs works properly.
+All 5 basic todo features work: Add, List, Complete, Delete, Clear; App runs correctly from terminal without errors; User can perform all operations through console interface; Error handling for invalid inputs works properly; Advanced features like due dates, priorities, categories, recurring patterns, search, filter, sort, and reminder functionality work properly.
 
 ### Quality Standards
-Clean Python project structure following PEP 8; All code properly commented and documented; Behavior matches specs exactly; All tests pass consistently; No runtime exceptions for valid operations.
+Clean Python project structure following PEP 8; All code properly commented and documented; Behavior matches specs exactly; All tests pass consistently including tests for advanced features; No runtime exceptions for valid operations.
 
 ### Process Compliance
 All implementation follows from approved specifications; No features implemented without spec traceability; Test-driven development practiced throughout; Code review and validation completed.
@@ -75,4 +75,4 @@ Clear: Language is precise and unambiguous; Beginner-friendly: Concepts explaine
 
 This constitution governs all development activities for Phase 1 of the Evolution of Todo project. All code, specifications, and tasks must comply with these principles. Amendments require explicit approval and documentation of the change rationale. All pull requests and reviews must verify constitution compliance before approval.
 
-**Version**: 1.0.0 | **Ratified**: 2026-01-03 | **Last Amended**: 2026-01-03
+**Version**: 1.1.0 | **Ratified**: 2026-01-03 | **Last Amended**: 2026-01-04

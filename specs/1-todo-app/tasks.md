@@ -8,16 +8,17 @@
 
 ## Dependencies
 
-User stories can be implemented in parallel after foundational setup is complete. User Story 1 (Add Tasks) provides the basic data model needed for other stories.
+User stories can be implemented in parallel after foundational setup is complete. User Story 1 (Add Tasks) provides the basic data model needed for other stories. User Stories 6-10 (Search, Filter, Sort, Overdue, Upcoming) can be implemented in parallel after the core CRUD functionality is established.
 
 ## Parallel Execution Examples
 
 - User Story 2 (View Tasks) can be developed in parallel with User Story 3 (Update Tasks) after foundational models exist
 - User Story 4 (Delete Tasks) and User Story 5 (Mark Complete) can be developed in parallel after foundational models exist
+- User Stories 6-10 (Search, Filter, Sort, Overdue, Upcoming) can be developed in parallel after core CRUD functionality exists
 
 ## Implementation Strategy
 
-Start with MVP containing User Story 1 (Add Tasks) and User Story 2 (View Tasks) to provide core functionality. Then incrementally add other features.
+Start with MVP containing User Story 1 (Add Tasks) and User Story 2 (View Tasks) to provide core functionality. Then incrementally add other features including User Stories 3-5 (Update, Delete, Complete) followed by advanced features in User Stories 6-10 (Search, Filter, Sort, Overdue, Upcoming).
 
 ---
 
@@ -146,13 +147,115 @@ Goal: Ensure all functionality works correctly and meets requirements
 
 ---
 
-## Phase 10: Polish & Cross-Cutting Concerns
+## Phase 10: User Story 6 - Search Tasks (Priority: P2)
+
+Goal: As a user, I want to search for tasks by keyword so that I can quickly find specific tasks.
+
+**Independent Test**: Can be fully tested by adding tasks with different titles/descriptions and searching for specific keywords, delivering value in task discovery.
+
+- [x] T059 [US6] Implement search_tasks method in TaskService
+- [x] T060 [US6] Add search functionality that looks for keywords in title and description
+- [x] T061 [US6] Create CLI menu option for searching tasks in src/todo_app/cli/menu.py
+- [x] T062 [US6] Implement input handling for search keyword
+- [x] T063 [US6] Add case-insensitive search functionality
+- [x] T064 [US6] Create unit tests for search functionality
+
+---
+## Phase 11: User Story 7 - Filter Tasks (Priority: P2)
+
+Goal: As a user, I want to filter tasks by various criteria so that I can view only the tasks that match my current needs.
+
+**Independent Test**: Can be fully tested by filtering tasks by different criteria and verifying the correct tasks are displayed, delivering value in task organization.
+
+- [x] T065 [US7] Implement filter_tasks method in TaskService
+- [x] T066 [US7] Add filtering by status, priority, due date, and category
+- [x] T067 [US7] Create CLI menu option for filtering tasks in src/todo_app/cli/menu.py
+- [x] T068 [US7] Implement input handling for filter criteria
+- [x] T069 [US7] Add support for multiple filter criteria
+- [x] T070 [US7] Create unit tests for filter functionality
+
+---
+## Phase 12: User Story 8 - Sort Tasks (Priority: P2)
+
+Goal: As a user, I want to sort tasks by various criteria so that I can view them in a preferred order.
+
+**Independent Test**: Can be fully tested by sorting tasks by different criteria and verifying they are displayed in the correct order, delivering value in task organization.
+
+- [x] T071 [US8] Implement sort_tasks method in TaskService
+- [x] T072 [US8] Add sorting by title, priority, due date, category, and status
+- [x] T073 [US8] Create CLI menu option for sorting tasks in src/todo_app/cli/menu.py
+- [x] T074 [US8] Implement input handling for sort criteria and order
+- [x] T075 [US8] Add ascending/descending sort options
+- [x] T076 [US8] Create unit tests for sort functionality
+
+---
+## Phase 13: User Story 9 - View Overdue Tasks (Priority: P2)
+
+Goal: As a user, I want to view all overdue tasks so that I can identify tasks that are past their due date.
+
+**Independent Test**: Can be fully tested by creating tasks with past due dates and viewing the overdue list, delivering value in task tracking.
+
+- [x] T077 [US9] Implement get_overdue_tasks method in TaskService
+- [x] T078 [US9] Add logic to identify tasks with past due dates that are not completed
+- [x] T079 [US9] Create CLI menu option for viewing overdue tasks in src/todo_app/cli/menu.py
+- [x] T080 [US9] Implement display of overdue tasks
+- [x] T081 [US9] Create unit tests for overdue task functionality
+
+---
+## Phase 14: User Story 10 - View Upcoming Tasks (Priority: P2)
+
+Goal: As a user, I want to view upcoming tasks so that I can plan for tasks that will be due soon.
+
+**Independent Test**: Can be fully tested by creating tasks with future due dates and viewing the upcoming list, delivering value in task planning.
+
+- [x] T082 [US10] Implement get_upcoming_tasks method in TaskService
+- [x] T083 [US10] Add logic to identify tasks due within a specified number of days
+- [x] T084 [US10] Create CLI menu option for viewing upcoming tasks in src/todo_app/cli/menu.py
+- [x] T085 [US10] Implement input handling for number of days to look ahead
+- [x] T086 [US10] Create unit tests for upcoming task functionality
+
+---
+## Phase 15: Recurring Tasks and Reminders
+
+Goal: Implement recurring task functionality and additional reminder features.
+
+- [x] T087 Implement recurring task logic in mark_task_complete method
+- [x] T088 Implement calculate_next_due_date helper method
+- [x] T089 Add support for daily, weekly, and monthly recurring patterns
+- [x] T090 Implement get_due_tasks_for_date method
+- [x] T091 Create unit tests for recurring and reminder functionality
+- [x] T092 Update Task model to support all new attributes (priority, due date, recurring pattern, category)
+
+---
+## Phase 16: CLI Menu Updates
+
+Goal: Update CLI menu to include all new functionality.
+
+- [x] T093 Update menu display to show all 11 options (including search, filter, sort, overdue, upcoming)
+- [x] T094 Implement handlers for all new menu options in src/todo_app/cli/menu.py
+- [x] T095 Update add task CLI to include priority, due date, recurring pattern, and category inputs
+- [x] T096 Update update task CLI to include all new field options
+- [x] T097 Add input validation for all new features in CLI
+
+---
+## Phase 17: Testing and Quality Assurance
+
+Goal: Ensure all new functionality works correctly and meets requirements
+
+- [x] T098 Create integration tests for all new features
+- [x] T099 Update existing tests to handle new task attributes
+- [x] T100 Create tests for all new acceptance scenarios from spec.md
+- [x] T101 Create tests for new edge cases identified in spec.md
+- [x] T102 Run all tests to verify new functionality works correctly
+
+---
+## Phase 18: Polish & Cross-Cutting Concerns
 
 Goal: Final touches and cross-cutting concerns
 
-- [x] T053 Add input validation for very long titles/descriptions
-- [x] T054 Add documentation to all public methods
-- [x] T055 Ensure consistent error message formatting
-- [x] T056 Add input sanitization for security
-- [x] T057 Create README with usage instructions
-- [x] T058 Verify all requirements from spec.md are met
+- [x] T103 Add input validation for new fields (priority, due date, recurring pattern, category)
+- [x] T104 Add documentation to all new public methods
+- [x] T105 Ensure consistent error message formatting for new features
+- [x] T106 Add input sanitization for new features
+- [x] T107 Update README with new features and usage instructions
+- [x] T108 Verify all new requirements from spec.md are met

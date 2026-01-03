@@ -7,7 +7,7 @@
 
 ## Summary
 
-Implementation of a console-based todo application in Python with in-memory storage. The application will provide basic CRUD operations for tasks through a menu-driven interface, following the educational goals of Phase 1 to establish fundamental software engineering principles.
+Implementation of a console-based todo application in Python with in-memory storage. The application provides comprehensive task management features including CRUD operations, priority management, due dates, recurring tasks, categories, search, filter, sort, and reminder functionality through a menu-driven interface, following the educational goals of Phase 1 to establish fundamental software engineering principles.
 
 ## Technical Context
 
@@ -17,9 +17,9 @@ Implementation of a console-based todo application in Python with in-memory stor
 **Testing**: pytest for unit and integration tests
 **Target Platform**: Cross-platform console application (Windows, macOS, Linux)
 **Project Type**: Console application
-**Performance Goals**: Sub-second response time for all operations
+**Performance Goals**: Sub-second response time for all operations including search, filter, and sort
 **Constraints**: <100MB memory usage, <2 seconds startup time, no external dependencies
-**Scale/Scope**: Single user, up to 1000 tasks in memory
+**Scale/Scope**: Single user, up to 1000 tasks in memory with support for search, filter, sort, and recurring functionality
 
 ## Constitution Check
 
@@ -66,14 +66,23 @@ src/
 tests/
 ├── unit/
 │   ├── test_task.py
-│   └── test_task_service.py
+│   ├── test_task_service.py
+│   ├── test_enhanced_features.py
+│   ├── test_new_features.py
+│   ├── test_recurring_and_reminders.py
+│   ├── test_view_tasks.py
+│   ├── test_update_tasks.py
+│   ├── test_delete_tasks.py
+│   └── test_completion_tasks.py
 ├── integration/
-│   └── test_cli.py
+│   ├── test_cli_integration.py
+│   ├── test_acceptance_scenarios.py
+│   └── test_edge_cases.py
 └── contract/
     └── test_api_contract.py
 ```
 
-**Structure Decision**: Single project structure chosen for the console application with clear separation of concerns: models for data, services for business logic, and CLI for user interface.
+**Structure Decision**: Single project structure chosen for the console application with clear separation of concerns: models for data (including priority, due date, recurring pattern, and category), services for business logic (including CRUD operations, search, filter, sort, recurring tasks, and reminder functionality), and CLI for user interface (supporting all advanced features).
 
 ## Complexity Tracking
 

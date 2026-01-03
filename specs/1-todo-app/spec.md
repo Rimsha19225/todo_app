@@ -3,7 +3,7 @@
 **Feature Branch**: `1-todo-app`
 **Created**: 2026-01-03
 **Status**: Draft
-**Input**: User description: "You are creating the SPECIFY document (requirements) for Phase 1 of the Evolution of Todo project. Phase: - Phase 1: In-Memory Python Console Todo Application. Goal: - Define WHAT the system must do - No implementation details - No architecture decisions - Only requirements, rules, and acceptance criteria. Include the following sections: 1. Phase Overview - Purpose of Phase 1 - Scope limited to console-based todo app. 2. Functional Requirements The system MUST support: - Add a task (title required, description optional) - View all tasks - Update a task by ID - Delete a task by ID - Mark a task as complete or incomplete. 3. Task Data Rules - Each task has: id, title, description, completed - IDs are unique and auto-generated - Tasks exist only in memory. 4. User Interaction Rules - Console-based menu - User selects actions via numbers - Clear success and error messages - Graceful handling of invalid task IDs. 5. Acceptance Criteria For each feature, define: - Input conditions - Expected behavior - Expected output. 6. Out of Scope (Explicitly Excluded) - Database or file storage - Web UI or API - Authentication - Priorities, tags, reminders - AI or chatbot features. Output: - Markdown format - File name: speckit.specify - Clear, unambiguous language - No code, no pseudo-code"
+**Input**: User description: "You are creating the SPECIFY document (requirements) for Phase 1 of the Evolution of Todo project. Phase: - Phase 1: In-Memory Python Console Todo Application. Goal: - Define WHAT the system must do - No implementation details - No architecture decisions - Only requirements, rules, and acceptance criteria. Include the following sections: 1. Phase Overview - Purpose of Phase 1 - Scope limited to console-based todo app. 2. Functional Requirements The system MUST support: - Add a task (title required, description optional, priority, due date, recurring pattern, and category) - View all tasks - Update a task by ID - Delete a task by ID - Mark a task as complete or incomplete - Search tasks by keyword - Filter tasks by criteria - Sort tasks by criteria - View overdue tasks - View upcoming tasks. 3. Task Data Rules - Each task has: id, title, description, completed, priority, due date, recurring pattern, category - IDs are unique and auto-generated - Tasks exist only in memory. 4. User Interaction Rules - Console-based menu - User selects actions via numbers - Clear success and error messages - Graceful handling of invalid task IDs. 5. Acceptance Criteria For each feature, define: - Input conditions - Expected behavior - Expected output. 6. Out of Scope (Explicitly Excluded) - Database or file storage - Web UI or API - Authentication - AI or chatbot features - External API integrations. Output: - Markdown format - File name: speckit.specify - Clear, unambiguous language - No code, no pseudo-code"
 
 ## Phase Overview
 
@@ -92,6 +92,86 @@ As a user, I want to mark tasks as complete or incomplete so that I can track my
 
 ---
 
+### User Story 6 - Search Tasks (Priority: P2)
+
+As a user, I want to search for tasks by keyword so that I can quickly find specific tasks.
+
+**Why this priority**: This enhances the usability of the application by allowing users to find tasks efficiently.
+
+**Independent Test**: Can be fully tested by adding tasks with different titles/descriptions and searching for specific keywords, delivering value in task discovery.
+
+**Acceptance Scenarios**:
+
+1. **Given** I have tasks with various titles and descriptions, **When** I search for a keyword that exists in a task title, **Then** I see all tasks containing that keyword in their title
+2. **Given** I have tasks with various titles and descriptions, **When** I search for a keyword that exists in a task description, **Then** I see all tasks containing that keyword in their description
+3. **Given** I search for a keyword that doesn't exist in any task, **When** I perform the search, **Then** I see a message indicating no tasks were found
+
+---
+
+### User Story 7 - Filter Tasks (Priority: P2)
+
+As a user, I want to filter tasks by various criteria so that I can view only the tasks that match my current needs.
+
+**Why this priority**: This enhances the usability of the application by allowing users to focus on specific subsets of tasks.
+
+**Independent Test**: Can be fully tested by filtering tasks by different criteria and verifying the correct tasks are displayed, delivering value in task organization.
+
+**Acceptance Scenarios**:
+
+1. **Given** I have tasks with different priorities, **When** I filter by a specific priority, **Then** I see only tasks with that priority
+2. **Given** I have tasks with different completion statuses, **When** I filter by completion status, **Then** I see only tasks with that status
+3. **Given** I have tasks with different categories, **When** I filter by a specific category, **Then** I see only tasks with that category
+
+---
+
+### User Story 8 - Sort Tasks (Priority: P2)
+
+As a user, I want to sort tasks by various criteria so that I can view them in a preferred order.
+
+**Why this priority**: This enhances the usability of the application by allowing users to organize tasks in meaningful ways.
+
+**Independent Test**: Can be fully tested by sorting tasks by different criteria and verifying they are displayed in the correct order, delivering value in task organization.
+
+**Acceptance Scenarios**:
+
+1. **Given** I have multiple tasks, **When** I sort by title, **Then** tasks are displayed in alphabetical order by title
+2. **Given** I have multiple tasks, **When** I sort by priority, **Then** tasks are displayed with the highest priority first
+3. **Given** I have multiple tasks, **When** I sort by due date, **Then** tasks are displayed in chronological order by due date
+
+---
+
+### User Story 9 - View Overdue Tasks (Priority: P2)
+
+As a user, I want to view all overdue tasks so that I can identify tasks that are past their due date.
+
+**Why this priority**: This provides important functionality for task management by highlighting tasks that need immediate attention.
+
+**Independent Test**: Can be fully tested by creating tasks with past due dates and viewing the overdue list, delivering value in task tracking.
+
+**Acceptance Scenarios**:
+
+1. **Given** I have tasks with past due dates that are not completed, **When** I view overdue tasks, **Then** I see all incomplete tasks with due dates in the past
+2. **Given** I have no overdue tasks, **When** I view overdue tasks, **Then** I see a message indicating no overdue tasks exist
+3. **Given** I have completed tasks with past due dates, **When** I view overdue tasks, **Then** those tasks are not included in the list
+
+---
+
+### User Story 10 - View Upcoming Tasks (Priority: P2)
+
+As a user, I want to view upcoming tasks so that I can plan for tasks that will be due soon.
+
+**Why this priority**: This provides important functionality for task management by allowing users to plan ahead for upcoming tasks.
+
+**Independent Test**: Can be fully tested by creating tasks with future due dates and viewing the upcoming list, delivering value in task planning.
+
+**Acceptance Scenarios**:
+
+1. **Given** I have tasks due within a specified number of days, **When** I view upcoming tasks, **Then** I see all incomplete tasks due within that time period
+2. **Given** I have no tasks due within the specified time period, **When** I view upcoming tasks, **Then** I see a message indicating no upcoming tasks exist
+3. **Given** I specify a number of days to look ahead, **When** I view upcoming tasks, **Then** I see tasks due within that specific time frame
+
+---
+
 ### Edge Cases
 
 - What happens when a user tries to perform an operation on a task ID that doesn't exist?
@@ -99,6 +179,10 @@ As a user, I want to mark tasks as complete or incomplete so that I can track my
 - What happens when a user enters invalid menu options repeatedly?
 - How does the system handle very long titles or descriptions?
 - What happens when all tasks are deleted and the user tries to update or mark complete?
+- What happens when a user marks a recurring task as complete?
+- How does the system handle invalid date formats for due dates?
+- What happens when a user searches with an empty keyword?
+- How does the system handle filtering with multiple criteria?
 
 ## Requirements *(mandatory)*
 
@@ -106,7 +190,7 @@ As a user, I want to mark tasks as complete or incomplete so that I can track my
 
 - **FR-001**: System MUST allow users to add tasks with a required title and optional description
 - **FR-002**: System MUST assign a unique, auto-generated ID to each task upon creation
-- **FR-003**: System MUST display all tasks in a formatted list with ID, title, description, and completion status
+- **FR-003**: System MUST display all tasks in a formatted list with ID, title, description, completion status, priority, due date, recurring pattern, and category
 - **FR-004**: System MUST allow users to update any task by its unique ID
 - **FR-005**: System MUST allow users to delete any task by its unique ID
 - **FR-006**: System MUST allow users to mark any task as complete or incomplete by its unique ID
@@ -114,15 +198,25 @@ As a user, I want to mark tasks as complete or incomplete so that I can track my
 - **FR-008**: System MUST handle invalid task IDs gracefully with clear error messages
 - **FR-009**: System MUST accept user input via numbered menu selections
 - **FR-010**: System MUST provide clear success and error messages for all operations
+- **FR-011**: System MUST allow users to search tasks by keyword in title or description
+- **FR-012**: System MUST allow users to filter tasks by status, priority, due date, and category
+- **FR-013**: System MUST allow users to sort tasks by title, priority, due date, category, or status
+- **FR-014**: System MUST allow users to view overdue tasks (tasks past their due date that are not completed)
+- **FR-015**: System MUST allow users to view upcoming tasks (tasks due within a specified number of days)
+- **FR-016**: System MUST support recurring tasks that create new instances when marked complete
 
 ### Task Data Rules
 
-- **TR-001**: Each task MUST have the following attributes: id, title, description, completed
+- **TR-001**: Each task MUST have the following attributes: id, title, description, completed, priority, due date, recurring pattern, category
 - **TR-002**: Task IDs MUST be unique and auto-generated when a task is created
 - **TR-003**: Task titles MUST be required when adding a new task
 - **TR-004**: Task descriptions MUST be optional when adding a new task
 - **TR-005**: Task completion status MUST default to incomplete when a task is created
 - **TR-006**: All task data MUST exist only in memory and be lost when the application terminates
+- **TR-007**: Task priority MUST be one of: high, medium, low and default to medium
+- **TR-008**: Task recurring pattern MUST be one of: daily, weekly, monthly, none and default to none
+- **TR-009**: Task category MUST be one of: work, home, other and default to other
+- **TR-010**: Task due date MUST be in YYYY-MM-DD format and be optional
 
 ### User Interaction Rules
 
@@ -137,24 +231,34 @@ As a user, I want to mark tasks as complete or incomplete so that I can track my
 - **OOS-001**: The system MUST NOT implement database or file storage
 - **OOS-002**: The system MUST NOT implement web UI or API
 - **OOS-003**: The system MUST NOT implement authentication
-- **OOS-004**: The system MUST NOT implement priorities, tags, or reminders
-- **OOS-005**: The system MUST NOT implement AI or chatbot features
+- **OOS-004**: The system MUST NOT implement AI or chatbot features
+- **OOS-005**: The system MUST NOT implement external API integrations
 
 ### Key Entities
 
-- **Task**: Represents a todo item with id, title, description, and completion status attributes
+- **Task**: Represents a todo item with id, title, description, completion status, priority, due date, recurring pattern, and category attributes
 - **Task ID**: A unique identifier assigned to each task, auto-generated upon creation
 - **Task List**: A collection of tasks stored in memory during application runtime
+- **Search**: A functionality that allows users to find tasks by keyword in title or description
+- **Filter**: A functionality that allows users to narrow down tasks by status, priority, due date, or category
+- **Sort**: A functionality that allows users to order tasks by various criteria
+- **Recurring Task**: A task that creates a new instance with an updated due date when marked complete
 
 ## Success Criteria *(mandatory)*
 
 ### Measurable Outcomes
 
-- **SC-001**: Users can successfully add tasks with required title and optional description in under 30 seconds
-- **SC-002**: Users can view all tasks with proper formatting showing ID, title, description, and completion status
+- **SC-001**: Users can successfully add tasks with required title and optional description, priority, due date, recurring pattern, and category in under 30 seconds
+- **SC-002**: Users can view all tasks with proper formatting showing ID, title, description, completion status, priority, due date, recurring pattern, and category
 - **SC-003**: Users can update, delete, or mark tasks complete/incomplete by ID with 100% accuracy
 - **SC-004**: The system handles invalid inputs gracefully with appropriate error messages, preventing crashes
 - **SC-005**: All functionality works correctly through the console-based menu interface with clear user guidance
 - **SC-006**: All task data operations (add, view, update, delete, mark complete) complete successfully with no data corruption
 - **SC-007**: The application maintains data integrity during all operations with proper validation
 - **SC-008**: All edge cases identified in the specification are handled gracefully without application failure
+- **SC-009**: Users can search tasks by keyword in title or description with 100% accuracy
+- **SC-010**: Users can filter tasks by status, priority, due date, or category with 100% accuracy
+- **SC-011**: Users can sort tasks by various criteria with correct ordering
+- **SC-012**: Users can view overdue tasks that are past their due date and not completed
+- **SC-013**: Users can view upcoming tasks due within a specified number of days
+- **SC-014**: Recurring tasks create new instances with updated due dates when marked complete
