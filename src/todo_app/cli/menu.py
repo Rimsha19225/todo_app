@@ -35,7 +35,12 @@ class Menu:
         print("3. Update Task")
         print("4. Delete Task")
         print("5. Mark Task Complete/Incomplete")
-        print("6. Exit")
+        print("6. Search Tasks")
+        print("7. Filter Tasks")
+        print("8. Sort Tasks")
+        print("9. View Overdue Tasks")
+        print("10. View Upcoming Tasks")
+        print("11. Exit")
         print("="*50)
 
     def get_user_choice(self) -> str:
@@ -46,11 +51,11 @@ class Menu:
             str: The user's menu choice
         """
         try:
-            choice = input("Enter your choice (1-6): ").strip()
+            choice = input("Enter your choice (1-11): ").strip()
             return choice
         except (EOFError, KeyboardInterrupt):
             print("\nExiting application...")
-            return "6"  # Return exit choice
+            return "11"  # Return exit choice
 
     def handle_add_task(self):
         """Handle the add task menu option."""
@@ -89,8 +94,18 @@ class Menu:
             recurring_map = {"1": "daily", "2": "weekly", "3": "monthly", "4": "none"}
             recurring_pattern = recurring_map.get(recurring_choice, "none")
 
-            task = self.task_service.add_task(title, description, priority, due_date, recurring_pattern)
+            # Get category
+            print("Select category:")
+            print("1. Work")
+            print("2. Home")
+            print("3. Other (default)")
+            category_choice = input("Enter choice (1-3, default 3): ").strip()
+            category_map = {"1": "work", "2": "home", "3": "other"}
+            category = category_map.get(category_choice, "other")
+
+            task = self.task_service.add_task(title, description, priority, due_date, recurring_pattern, category)
             print(f"Task added successfully with ID: {task.id}")
+            print(f"Task details: {task}")
         except ValueError as e:
             print(f"Error: {e}")
         except Exception as e:
@@ -110,6 +125,9 @@ class Menu:
             print(f"[{status}] ID: {task.id} | Title: {task.title}")
             if task.description:
                 print(f"    Description: {task.description}")
+            print(f"    Priority: {task.priority} | Category: {task.category}")
+            if task.due_date:
+                print(f"    Due: {task.due_date}")
             print("-" * 40)
 
     def handle_update_task(self):
@@ -164,16 +182,28 @@ class Menu:
             recurring_map = {"1": "daily", "2": "weekly", "3": "monthly", "4": "none"}
             updated_recurring_pattern = recurring_map.get(recurring_choice, existing_task.recurring_pattern if not recurring_choice else existing_task.recurring_pattern)
 
+            # Update category
+            print(f"Current category: {existing_task.category}")
+            print("Select new category (or press Enter to keep current):")
+            print("1. Work")
+            print("2. Home")
+            print("3. Other")
+            category_choice = input("Enter choice (1-3, or press Enter to keep current): ").strip()
+            category_map = {"1": "work", "2": "home", "3": "other"}
+            updated_category = category_map.get(category_choice, existing_task.category if not category_choice else existing_task.category)
+
             updated_task = self.task_service.update_task(
                 task_id,
                 updated_title,
                 updated_description,
                 updated_priority,
                 updated_due_date,
-                updated_recurring_pattern
+                updated_recurring_pattern,
+                updated_category
             )
             if updated_task:
                 print(f"Task updated successfully!")
+                print(f"Updated task details: {updated_task}")
             else:
                 print(f"Error: Failed to update task with ID {task_id}")
         except Exception as e:
@@ -230,6 +260,176 @@ class Menu:
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
 
+    def handle_search_tasks(self):
+        """Handle the search tasks menu option."""
+        print("\n--- Search Tasks ---")
+        try:
+            keyword = input("Enter keyword to search for in title or description: ").strip()
+            if not keyword:
+                print("Error: Keyword is required.")
+                return
+
+            tasks = self.task_service.search_tasks(keyword)
+
+            if not tasks:
+                print("No tasks found matching the keyword.")
+                return
+
+            print(f"Found {len(tasks)} task(s) matching '{keyword}':")
+            for task in tasks:
+                status = "✓" if task.completed else "○"
+                print(f"[{status}] ID: {task.id} | Title: {task.title}")
+                if task.description:
+                    print(f"    Description: {task.description}")
+                print(f"    Priority: {task.priority} | Category: {task.category}")
+                if task.due_date:
+                    print(f"    Due: {task.due_date}")
+                print("-" * 40)
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+
+    def handle_filter_tasks(self):
+        """Handle the filter tasks menu option."""
+        print("\n--- Filter Tasks ---")
+        try:
+            print("Enter filter criteria (press Enter to skip each):")
+
+            # Get status filter
+            status_input = input("Filter by status (c for completed, i for incomplete, Enter to skip): ").strip().lower()
+            status = None
+            if status_input == "c":
+                status = True
+            elif status_input == "i":
+                status = False
+
+            # Get priority filter
+            priority_input = input("Filter by priority (high/medium/low, Enter to skip): ").strip().lower()
+            priority = priority_input if priority_input in ["high", "medium", "low"] else None
+
+            # Get due date filter
+            due_date = input("Filter by due date (YYYY-MM-DD format, Enter to skip): ").strip()
+            due_date = due_date if due_date else None
+
+            # Get category filter
+            category_input = input("Filter by category (work/home/other, Enter to skip): ").strip().lower()
+            category = category_input if category_input in ["work", "home", "other"] else None
+
+            tasks = self.task_service.filter_tasks(status=status, priority=priority,
+                                                 due_date=due_date, category=category)
+
+            if not tasks:
+                print("No tasks found matching the filter criteria.")
+                return
+
+            print(f"Found {len(tasks)} task(s) matching the filter criteria:")
+            for task in tasks:
+                status = "✓" if task.completed else "○"
+                print(f"[{status}] ID: {task.id} | Title: {task.title}")
+                if task.description:
+                    print(f"    Description: {task.description}")
+                print(f"    Priority: {task.priority} | Category: {task.category}")
+                if task.due_date:
+                    print(f"    Due: {task.due_date}")
+                print("-" * 40)
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+
+    def handle_sort_tasks(self):
+        """Handle the sort tasks menu option."""
+        print("\n--- Sort Tasks ---")
+        try:
+            print("Sort by:")
+            print("1. Title (alphabetically)")
+            print("2. Priority")
+            print("3. Due Date")
+            print("4. Category")
+            print("5. Status")
+
+            sort_choice = input("Enter choice (1-5): ").strip()
+
+            sort_options = {
+                "1": "title",
+                "2": "priority",
+                "3": "due_date",
+                "4": "category",
+                "5": "status"
+            }
+
+            sort_by = sort_options.get(sort_choice, "title")
+
+            order_choice = input("Sort order (a for ascending, d for descending): ").strip().lower()
+            ascending = True if order_choice == "a" else False
+
+            tasks = self.task_service.sort_tasks(sort_by=sort_by, ascending=ascending)
+
+            if not tasks:
+                print("No tasks to display.")
+                return
+
+            print(f"Tasks sorted by {sort_by} ({'ascending' if ascending else 'descending'}):")
+            for task in tasks:
+                status = "✓" if task.completed else "○"
+                print(f"[{status}] ID: {task.id} | Title: {task.title}")
+                if task.description:
+                    print(f"    Description: {task.description}")
+                print(f"    Priority: {task.priority} | Category: {task.category}")
+                if task.due_date:
+                    print(f"    Due: {task.due_date}")
+                print("-" * 40)
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+
+    def handle_view_overdue_tasks(self):
+        """Handle the view overdue tasks menu option."""
+        print("\n--- Overdue Tasks ---")
+        try:
+            tasks = self.task_service.get_overdue_tasks()
+
+            if not tasks:
+                print("No overdue tasks found.")
+                return
+
+            print(f"Found {len(tasks)} overdue task(s):")
+            for task in tasks:
+                print(f"ID: {task.id} | Title: {task.title}")
+                if task.description:
+                    print(f"    Description: {task.description}")
+                print(f"    Priority: {task.priority} | Category: {task.category}")
+                if task.due_date:
+                    print(f"    Due: {task.due_date}")
+                print("-" * 40)
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+
+    def handle_view_upcoming_tasks(self):
+        """Handle the view upcoming tasks menu option."""
+        print("\n--- Upcoming Tasks ---")
+        try:
+            days_input = input("Enter number of days to look ahead (default 7): ").strip()
+            try:
+                days = int(days_input) if days_input else 7
+            except ValueError:
+                days = 7
+                print(f"Invalid input. Using default value of {days} days.")
+
+            tasks = self.task_service.get_upcoming_tasks(days=days)
+
+            if not tasks:
+                print(f"No tasks due in the next {days} day(s).")
+                return
+
+            print(f"Found {len(tasks)} task(s) due in the next {days} day(s):")
+            for task in tasks:
+                print(f"ID: {task.id} | Title: {task.title}")
+                if task.description:
+                    print(f"    Description: {task.description}")
+                print(f"    Priority: {task.priority} | Category: {task.category}")
+                if task.due_date:
+                    print(f"    Due: {task.due_date}")
+                print("-" * 40)
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+
     def run(self):
         """Run the main menu loop."""
         print("Starting Todo Application...")
@@ -248,7 +448,17 @@ class Menu:
             elif choice == "5":
                 self.handle_mark_task()
             elif choice == "6":
+                self.handle_search_tasks()
+            elif choice == "7":
+                self.handle_filter_tasks()
+            elif choice == "8":
+                self.handle_sort_tasks()
+            elif choice == "9":
+                self.handle_view_overdue_tasks()
+            elif choice == "10":
+                self.handle_view_upcoming_tasks()
+            elif choice == "11":
                 print("\nThank you for using the Todo Application. Goodbye!")
                 break
             else:
-                print(f"\nInvalid choice: {choice}. Please enter a number between 1-6.")
+                print(f"\nInvalid choice: {choice}. Please enter a number between 1-11.")

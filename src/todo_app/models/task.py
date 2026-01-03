@@ -26,6 +26,7 @@ class Task:
         priority (str): Priority level of the task (high, medium, low), defaults to 'medium'
         due_date (str): Due date of the task in YYYY-MM-DD format, optional
         recurring_pattern (str): Recurring pattern of the task (daily, weekly, monthly, none), defaults to 'none'
+        category (str): Category of the task (work, home, or other), defaults to 'other'
     """
 
     id: str
@@ -35,6 +36,7 @@ class Task:
     priority: str = "medium"
     due_date: Optional[str] = None
     recurring_pattern: str = "none"
+    category: str = "other"
 
     def __post_init__(self):
         """Validate task attributes after initialization."""
@@ -57,6 +59,11 @@ class Task:
         if self.recurring_pattern not in valid_patterns:
             raise ValueError(f"Recurring pattern must be one of {valid_patterns}")
 
+        # Validate category
+        valid_categories = ["work", "home", "other"]
+        if self.category not in valid_categories:
+            raise ValueError(f"Category must be one of {valid_categories}")
+
         # Validate due date format if provided
         if self.due_date:
             try:
@@ -69,8 +76,9 @@ class Task:
         status = "X" if self.completed else "O"
         priority_char = {"high": "H", "medium": "M", "low": "L"}.get(self.priority, "M")
         recurring_char = {"daily": "D", "weekly": "W", "monthly": "M", "none": "-"}.get(self.recurring_pattern, "-")
+        category_char = {"work": "W", "home": "H", "other": "O"}.get(self.category, "O")
 
-        result = f"[{status}] {self.id}: {self.title} (P:{priority_char})"
+        result = f"[{status}] {self.id}: {self.title} (P:{priority_char}, C:{category_char})"
         if self.due_date:
             result += f" Due: {self.due_date}"
         if self.recurring_pattern != "none":
@@ -88,7 +96,8 @@ class Task:
             "completed": self.completed,
             "priority": self.priority,
             "due_date": self.due_date,
-            "recurring_pattern": self.recurring_pattern
+            "recurring_pattern": self.recurring_pattern,
+            "category": self.category
         }
 
     @classmethod
@@ -101,5 +110,6 @@ class Task:
             completed=data.get("completed", False),
             priority=data.get("priority", "medium"),
             due_date=data.get("due_date"),
-            recurring_pattern=data.get("recurring_pattern", "none")
+            recurring_pattern=data.get("recurring_pattern", "none"),
+            category=data.get("category", "other")
         )
